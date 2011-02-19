@@ -59,7 +59,9 @@
 
 @property (nonatomic) NSInteger columnCount;
 
-@property (nonatomic, readonly) NSInteger rowCount;
+@property (nonatomic) NSInteger rowCount;
+
+@property (nonatomic) NSInteger pageCount;
 
 @property (nonatomic, readonly) TTPageControl* pager;
 

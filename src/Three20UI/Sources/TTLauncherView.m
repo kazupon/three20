@@ -56,6 +56,7 @@ static const NSTimeInterval kWobbleTime = 0.07;
 static const NSInteger kPromptTag = 997;
 
 static const NSInteger kDefaultColumnCount = 3;
+static const NSInteger kDefaultRowCount = 3;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,6 +65,7 @@ static const NSInteger kDefaultColumnCount = 3;
 @implementation TTLauncherView
 
 @synthesize columnCount = _columnCount;
+@synthesize rowCount = _rowCount;
 @synthesize pager       = _pager;
 @synthesize prompt      = _prompt;
 @synthesize editing     = _editing;
@@ -97,6 +99,7 @@ static const NSInteger kDefaultColumnCount = 3;
 
     self.autoresizesSubviews = YES;
     self.columnCount = kDefaultColumnCount;
+    self.rowCount = kDefaultRowCount;
   }
 
   return self;
@@ -132,7 +135,7 @@ static const NSInteger kDefaultColumnCount = 3;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (CGFloat)rowHeight {
-  return round(_scrollView.height / 3);
+  return round(_scrollView.height / _rowCount);
 }
 
 
@@ -781,7 +784,6 @@ static const NSInteger kDefaultColumnCount = 3;
 - (void)setColumnCount:(NSInteger)columnCount {
   if (_columnCount != columnCount) {
     _columnCount = columnCount;
-    _rowCount = 0;
     TT_RELEASE_SAFELY(_buttons);
     [self setNeedsLayout];
   }
@@ -789,11 +791,18 @@ static const NSInteger kDefaultColumnCount = 3;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-- (NSInteger)rowCount {
-  if (!_rowCount) {
-    _rowCount = floor(self.height / [self rowHeight]);
-  }
-  return _rowCount;
+- (void)setRowCount:(NSInteger)rowCount {
+    if (_rowCount != rowCount) {
+        _rowCount = rowCount;
+        TT_RELEASE_SAFELY(_buttons);
+        [self setNeedsLayout];
+    }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (NSInteger)pageCount {
+    return self.rowCount * self.columnCount;
 }
 
 
