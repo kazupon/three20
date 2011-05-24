@@ -148,6 +148,7 @@ static const NSInteger kDefaultRowCount = 3;
 
     NSInteger itemIndex = [path indexAtPosition:1];
     return [buttonPage objectAtIndex:itemIndex];
+
   } else {
     return nil;
   }
@@ -172,6 +173,7 @@ static const NSInteger kDefaultRowCount = 3;
   if (path) {
     NSInteger pageIndex = [path indexAtPosition:0];
     return [_buttons objectAtIndex:pageIndex];
+
   } else {
     return nil;
   }
@@ -327,6 +329,7 @@ static const NSInteger kDefaultRowCount = 3;
      [_buttons addObject:nextButtonPage];
      nextItemsPage = [NSMutableArray array];
      [_pages addObject:nextItemsPage];
+
     } else {
       nextButtonPage = [_buttons objectAtIndex:pageIndex+1];
       nextItemsPage = [_pages objectAtIndex:pageIndex+1];
@@ -381,6 +384,7 @@ static const NSInteger kDefaultRowCount = 3;
     button.dragging = YES;
 
     _scrollView.scrollEnabled = NO;
+
   } else {
     [UIView setAnimationDelegate:self];
     [UIView setAnimationDidStopSelector:@selector(releaseButtonDidStop)];
@@ -414,6 +418,7 @@ static const NSInteger kDefaultRowCount = 3;
       _springing = YES;
       [self performSelector:@selector(springingDidStop) withObject:nil afterDelay:0.3];
     }
+
   } else {
     CGFloat newX = _scrollView.contentOffset.x + _scrollView.width;
     if (newX <= _scrollView.contentSize.width - _scrollView.width) {
@@ -449,6 +454,7 @@ static const NSInteger kDefaultRowCount = 3;
     if (button == _dragButton) {
       [self startDraggingButton:nil withEvent:nil];
     }
+
   } else {
     TT_INVALIDATE_TIMER(_editHoldTimer);
     [button setSelected:YES];
@@ -470,6 +476,7 @@ static const NSInteger kDefaultRowCount = 3;
     if (button == _dragButton) {
       [self startDraggingButton:nil withEvent:nil];
     }
+
   } else {
     TT_INVALIDATE_TIMER(_editHoldTimer);
   }
@@ -482,6 +489,7 @@ static const NSInteger kDefaultRowCount = 3;
     if (!_dragButton) {
       [self startDraggingButton:button withEvent:event];
     }
+
   } else {
     TT_INVALIDATE_TIMER(_editHoldTimer);
 
@@ -525,6 +533,7 @@ static const NSInteger kDefaultRowCount = 3;
           ++nWobblyButtons;
           if (i % 2) {
             button.transform = wobblesLeft ? wobbleRight : wobbleLeft;
+
           } else {
             button.transform = wobblesLeft ? wobbleLeft : wobbleRight;
           }
@@ -538,6 +547,7 @@ static const NSInteger kDefaultRowCount = 3;
       [UIView setAnimationDelegate:self];
       [UIView setAnimationDidStopSelector:@selector(wobble)];
       wobblesLeft = !wobblesLeft;
+
     } else {
       [NSObject cancelPreviousPerformRequestsWithTarget:self];
       [self performSelector:@selector(wobble) withObject:nil afterDelay:kWobbleTime];
@@ -641,6 +651,7 @@ static const NSInteger kDefaultRowCount = 3;
                                 target:self selector:@selector(springLoadTimer:)
                                 userInfo:[NSNumber numberWithBool:goToPreviousPage] repeats:NO];
     }
+
   } else {
     TT_INVALIDATE_TIMER(_springLoadTimer);
   }
@@ -825,6 +836,7 @@ static const NSInteger kDefaultRowCount = 3;
 
     if (!_pages) {
       _pages = [[NSMutableArray arrayWithObject:[NSMutableArray arrayWithObject:item]] retain];
+
     } else {
       NSMutableArray* page = [self pageWithFreeSpace:self.currentPageIndex];
       [page addObject:item];
@@ -860,11 +872,13 @@ static const NSInteger kDefaultRowCount = 3;
         [UIView beginAnimations:nil context:button];
         [UIView setAnimationDuration:TT_FAST_TRANSITION_DURATION];
         [UIView setAnimationDelegate:self];
-        [UIView setAnimationDidStopSelector:@selector(removeButtonAnimationDidStop:finished:context:)];
+        [UIView setAnimationDidStopSelector:
+         @selector(removeButtonAnimationDidStop:finished:context:)];
         [self layoutButtons];
         button.transform = CGAffineTransformMakeScale(0.01, 0.01);
         button.alpha = 0;
         [UIView commitAnimations];
+
       } else {
         [button removeFromSuperview];
         [self layoutButtons];
